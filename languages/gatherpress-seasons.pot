@@ -1,0 +1,210 @@
+# Copyright (C) 2026 carstenbach
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: GatherPress Seasons 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gatherpress-seasons\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-05-31T14:34:53+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: gatherpress-seasons\n"
+
+#. Plugin Name of the plugin
+msgid "GatherPress Seasons"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/carstingaxion/gatherpress-seasons"
+msgstr ""
+
+#. Author of the plugin
+msgid "carstenbach"
+msgstr ""
+
+#: includes/classes/class-setup.php:107
+#: includes/classes/class-setup.php:128
+#: includes/classes/class-setup.php:270
+msgid "Seasons"
+msgstr ""
+
+#: includes/classes/class-setup.php:108
+msgid "Season"
+msgstr ""
+
+#: includes/classes/class-setup.php:109
+msgid "Add New"
+msgstr ""
+
+#: includes/classes/class-setup.php:110
+msgid "Add New Season"
+msgstr ""
+
+#: includes/classes/class-setup.php:111
+msgid "Edit Season"
+msgstr ""
+
+#: includes/classes/class-setup.php:112
+msgid "New Season"
+msgstr ""
+
+#: includes/classes/class-setup.php:113
+msgid "View Season"
+msgstr ""
+
+#: includes/classes/class-setup.php:114
+msgid "View Seasons"
+msgstr ""
+
+#: includes/classes/class-setup.php:115
+msgid "Search Seasons"
+msgstr ""
+
+#: includes/classes/class-setup.php:116
+msgid "No seasons found"
+msgstr ""
+
+#: includes/classes/class-setup.php:117
+msgid "No seasons found in Trash"
+msgstr ""
+
+#: includes/classes/class-setup.php:118
+msgid "Parent Season:"
+msgstr ""
+
+#: includes/classes/class-setup.php:119
+msgid "All Seasons"
+msgstr ""
+
+#: includes/classes/class-setup.php:120
+msgid "Season Archives"
+msgstr ""
+
+#: includes/classes/class-setup.php:121
+msgid "Season Attributes"
+msgstr ""
+
+#: includes/classes/class-setup.php:122
+msgid "Insert into season"
+msgstr ""
+
+#: includes/classes/class-setup.php:123
+msgid "Uploaded to this season"
+msgstr ""
+
+#: includes/classes/class-setup.php:124
+msgid "Season Poster"
+msgstr ""
+
+#: includes/classes/class-setup.php:125
+msgid "Set season poster"
+msgstr ""
+
+#: includes/classes/class-setup.php:126
+msgid "Remove season poster"
+msgstr ""
+
+#: includes/classes/class-setup.php:127
+msgid "Use as season poster"
+msgstr ""
+
+#: includes/classes/class-setup.php:129
+msgid "Filter seasons list"
+msgstr ""
+
+#: includes/classes/class-setup.php:130
+msgid "Filter seasons by date"
+msgstr ""
+
+#: includes/classes/class-setup.php:131
+msgid "Seasons list navigation"
+msgstr ""
+
+#: includes/classes/class-setup.php:132
+msgid "Seasons list"
+msgstr ""
+
+#: includes/classes/class-setup.php:133
+msgid "Season published."
+msgstr ""
+
+#: includes/classes/class-setup.php:134
+msgid "Season published privately."
+msgstr ""
+
+#: includes/classes/class-setup.php:135
+msgid "Season reverted to draft."
+msgstr ""
+
+#: includes/classes/class-setup.php:136
+msgid "Season moved to Trash."
+msgstr ""
+
+#: includes/classes/class-setup.php:137
+msgid "Season scheduled."
+msgstr ""
+
+#: includes/classes/class-setup.php:138
+msgid "Season updated."
+msgstr ""
+
+#: includes/classes/class-setup.php:139
+msgid "Season Link"
+msgstr ""
+
+#: includes/classes/class-setup.php:140
+msgid "A link to a season."
+msgstr ""
+
+#: includes/classes/class-setup.php:203
+#: src/index.js:13
+msgid "Period"
+msgstr ""
+
+#: includes/classes/class-setup.php:261
+msgid "Theater"
+msgstr ""
+
+#: includes/classes/class-setup.php:276
+msgid "Permalink base of Seasons."
+msgstr ""
+
+#: includes/classes/class-setup.php:282
+msgctxt "URL permalink structure example for seasons"
+msgid "sample-season"
+msgstr ""
+
+#: includes/classes/class-setup.php:314
+#: includes/classes/class-setup.php:334
+msgid "Seasons Starter"
+msgstr ""
+
+#: includes/classes/class-setup.php:315
+#: includes/classes/class-setup.php:335
+msgid "A starter pattern for seasons."
+msgstr ""
+
+#: includes/classes/class-setup.php:316
+#: includes/classes/class-setup.php:337
+msgid "This is a starter pattern for seasons. Customize it to fit your needs!"
+msgstr ""
+
+#: src/index.js:31
+msgid "6 months"
+msgstr ""
+
+#: src/index.js:35
+msgid "3 months"
+msgstr ""
+
+#: src/index.js:39
+msgid "1 month"
+msgstr ""
+
+#: src/index.js:43
+msgid "1 week"
+msgstr ""
