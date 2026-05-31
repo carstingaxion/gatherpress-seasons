@@ -62,6 +62,8 @@ class Setup {
 		// Setup starter patterns.
 		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_starter_patterns_natively' ) );
+		add_action( 'init', array( $this, 'register_block_patterns' ) );
+		add_action( 'init', array( $this, 'register_block_templates' ) );
 	}
 
 	/**
@@ -470,6 +472,176 @@ class Setup {
 				'postTypes'   => array( self::POST_TYPE_NAME ),
 				'source'      => 'plugin',
 			)
+		);
+	}
+
+	/**
+	 * Register additional block patterns for seasons.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function register_block_patterns(): void {
+		// Season with Events Pattern
+		\register_block_pattern(
+			'gatherpress-seasons/with-events',
+			array(
+				'title'       => __( 'Season with Events', 'gatherpress-seasons' ),
+				'description' => __( 'A season pattern showcasing related events.', 'gatherpress-seasons' ),
+				'content'     => '<!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading --><h2>' . esc_html__( 'Events in This Season', 'gatherpress-seasons' ) . '</h2><!-- /wp:heading --><!-- wp:paragraph --><p>' . esc_html__( 'Explore all events happening during this season.', 'gatherpress-seasons' ) . '</p><!-- /wp:paragraph --><!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"gatherpress_event","order":"asc","orderBy":"meta_value_num","meta_key":"gatherpress_event_date","search":"","exclude":[],"sticky":"","inherit":false},"displayLayout":{"type":"flex","columns":3},"namespace":"core/query"} --><div class="wp-block-query"><!-- wp:post-template --><!-- wp:post-title {"isLink":true} /--><!-- wp:post-date {"format":"F j, Y"} /--><!-- /wp:post-template --></div><!-- /wp:query --></div><!-- /wp:group -->',
+				'blockTypes'  => array( 'core/post-content' ),
+				'postTypes'   => array( self::POST_TYPE_NAME ),
+				'source'      => 'plugin',
+			)
+		);
+
+		// Season Header Pattern
+		\register_block_pattern(
+			'gatherpress-seasons/header',
+			array(
+				'title'       => __( 'Season Header', 'gatherpress-seasons' ),
+				'description' => __( 'A visual header block for season information.', 'gatherpress-seasons' ),
+				'content'     => '<!-- wp:group {"align":"full","backgroundColor":"primary","textColor":"white","layout":{"type":"constrained"}} --><div class="wp-block-group has-white-color has-primary-background-color has-text-color has-background" style="padding:40px"><!-- wp:post-title {"level":1} /--><!-- wp:post-excerpt /--><!-- wp:spacer {"height":"20px"} --><div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div><!-- /wp:spacer --><!-- wp:post-featured-image {"align":"wide"} /--></div><!-- /wp:group -->',
+				'blockTypes'  => array( 'core/post-content' ),
+				'postTypes'   => array( self::POST_TYPE_NAME ),
+				'source'      => 'plugin',
+			)
+		);
+
+		// Season Duration Pattern
+		\register_block_pattern(
+			'gatherpress-seasons/duration',
+			array(
+				'title'       => __( 'Season Duration', 'gatherpress-seasons' ),
+				'description' => __( 'A pattern for displaying the start and end date range.', 'gatherpress-seasons' ),
+				'content'     => '<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group"><!-- wp:group --><div class="wp-block-group"><!-- wp:heading {"level":3} --><h3>' . esc_html__( 'Start Date', 'gatherpress-seasons' ) . '</h3><!-- /wp:heading --><!-- wp:paragraph --><p>[Season Start Date]</p><!-- /wp:paragraph --></div><!-- /wp:group --><!-- wp:group --><div class="wp-block-group"><!-- wp:heading {"level":3} --><h3>' . esc_html__( 'End Date', 'gatherpress-seasons' ) . '</h3><!-- /wp:heading --><!-- wp:paragraph --><p>[Season End Date]</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:group -->',
+				'blockTypes'  => array( 'core/post-content' ),
+				'postTypes'   => array( self::POST_TYPE_NAME ),
+				'source'      => 'plugin',
+			)
+		);
+	}
+
+	/**
+	 * Register block templates for seasons.
+	 *
+	 * Block templates define the default structure and locked blocks for a post type.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function register_block_templates(): void {
+		$season_template = array(
+			array(
+				'core/group',
+				array(
+					'layout' => array( 'type' => 'constrained' ),
+				),
+				array(
+					array(
+						'core/post-title',
+						array(
+							'placeholder' => __( 'Enter season title…', 'gatherpress-seasons' ),
+						),
+					),
+					array(
+						'core/post-featured-image',
+						array(
+							'sizeSlug' => 'large',
+						),
+					),
+					array(
+						'core/post-excerpt',
+						array(
+							'placeholder' => __( 'Enter season description…', 'gatherpress-seasons' ),
+						),
+					),
+					array(
+						'core/post-content',
+						array(),
+					),
+				),
+			),
+		);
+
+		\register_block_template( array( self::POST_TYPE_NAME ), $season_template );
+
+		// Register archive template.
+		$archive_template = array(
+			array(
+				'core/group',
+				array(
+					'align' => 'full',
+					'layout' => array( 'type' => 'constrained' ),
+				),
+				array(
+					array(
+						'core/heading',
+						array(
+							'level'   => 1,
+							'content' => __( 'Seasons', 'gatherpress-seasons' ),
+						),
+					),
+					array(
+						'core/query',
+						array(
+							'query' => array(
+								'perPage'  => 12,
+								'pages'    => 0,
+								'offset'   => 0,
+								'postType' => self::POST_TYPE_NAME,
+								'order'    => 'desc',
+								'orderBy'  => 'date',
+								'inherit'  => false,
+							),
+							'displayLayout' => array(
+								'type'    => 'flex',
+								'columns' => 3,
+							),
+						),
+						array(
+							array(
+								'core/post-template',
+								array(),
+								array(
+									array(
+										'core/post-title',
+										array(
+											'isLink' => true,
+										),
+									),
+									array(
+										'core/post-date',
+										array(
+											'format' => 'F j, Y',
+										),
+									),
+									array(
+										'core/post-excerpt',
+										array(),
+									),
+								),
+							),
+							array(
+								'core/query-pagination',
+								array(),
+								array(
+									array( 'core/query-pagination-previous' ),
+									array( 'core/query-pagination-numbers' ),
+									array( 'core/query-pagination-next' ),
+								),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		\register_block_template(
+			array( self::POST_TYPE_NAME, 'archive' ),
+			$archive_template
 		);
 	}
 }
