@@ -11,6 +11,9 @@ namespace GatherPress_Seasons;
 
 use GatherPress\Core;
 use GatherPress\Core\Settings;
+use GatherPress\Core\Shadow_Source;
+use WP_Post_Type;
+use WP_Query;
 
 /**
  * Main plugin class using Singleton pattern.
@@ -62,6 +65,9 @@ class Setup {
 		// Setup starter patterns.
 		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_starter_patterns_natively' ) );
+
+		// Hook onto "Event ended" action to update the option, which powers the default_term field of the taxonomy.
+		add_action( 'gatherpress_event_ended', array( $this, 'update_default_term_on_season_end' ) );
 	}
 
 	/**
@@ -116,7 +122,7 @@ class Setup {
 	protected function get_shadow_taxonomy_labels( string $post_type ): array {
 		$post_type_object = get_post_type_object( $post_type );
 
-		if ( ! $post_type_object instanceof \WP_Post_Type ) {
+		if ( ! $post_type_object instanceof WP_Post_Type ) {
 			return array(
 				'name'          => $post_type,
 				'singular_name' => $post_type,
@@ -216,6 +222,7 @@ class Setup {
 					$args['show_in_quick_edit'] = true;
 					$args['show_ui']            = true; // Needed to show the taxonomy metabox in the editor.
 					$args['show_in_menu']       = false; // Correction after show_ui.
+					$args['default_term']       = maybe_unserialize( get_option( sprintf( 'prepared_default_term_%s', self::TAXONOMY_NAME ) ) );
 				}
 				return $args;
 			},
@@ -473,4 +480,60 @@ class Setup {
 			)
 		);
 	}
+
+	/**
+	 * Update the option, that powers the default_term field of the taxonomy, when a season ends.
+	 *
+	 * This method is hooked to the 'gatherpress_event_ended' action, which is triggered when an event-supporting post ends.
+	 * This action is not part of gatherpress core, it's triggered by the "GatherPress Cache Invalidation Hooks" plugin.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $event_id The ID of the event-supporting post that ended.
+	 *                      Can be an event, a season, a play or anything else.
+	 *
+	 * @return void
+	 */
+	public function update_default_term_on_season_end( int $event_id ): void {
+		$post_type = get_post_type( $event_id );
+		if ( self::POST_TYPE_NAME !== $post_type ) {
+			return;
+		}
+
+		// Look for the next season.
+		$new_season  = new WP_Query(
+			array(
+				'post_type'               => self::POST_TYPE_NAME,
+				'posts_per_page'          => 1,
+				'gatherpress_event_query' => 'upcoming', // gatherpress core query var.
+				'include_unfinished'      => true, // gatherpress core query var.
+				'post_status'             => 'publish',
+				'order'                   => 'ASC',
+				'no_found_rows'           => false,
+				'update_post_meta_cache'  => false,
+				'update_post_term_cache'  => false,
+			)
+		);
+		$option_name = sprintf( 'prepared_default_term_%s', self::TAXONOMY_NAME );
+
+		if( ! empty( $new_season->posts ) ) {
+			$shadow_source = Shadow_Source::get_instance();
+			$season_post   = $new_season->posts[0];
+			$season_term   = get_term_by(
+				'slug',
+				$shadow_source->term_slug_from_post_name( $season_post->post_name ),
+				self::TAXONOMY_NAME,
+				ARRAY_A
+			);
+			$save_data = array(
+				'name'    => $season_term['name'],
+				'slug'    => $season_term['slug'],
+			);
+			update_option( $option_name, $save_data );
+		} else {
+			// No upcoming seasons, delete the option.
+			delete_option( $option_name );
+		}
+	}
+
 }
