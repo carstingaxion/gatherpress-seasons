@@ -12,7 +12,7 @@
 
 ## Description
 
-...
+GatherPress Seasons registers a custom `Season` post type and a shadow taxonomy for season terms that can be assigned to GatherPress events and plays. It updates the admin interface for seasons by relabeling the event date field to “Period”, adds a Gutenberg editor script for the season editor, exposes a seasons permalink setting in the GatherPress Theater settings page, and keeps the default season term in sync when seasons end.
 
 ## Requirements
 

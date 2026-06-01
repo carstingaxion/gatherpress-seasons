@@ -11,6 +11,9 @@ namespace GatherPress_Seasons;
 
 use GatherPress\Core;
 use GatherPress\Core\Settings;
+use GatherPress\Core\Shadow_Source;
+use WP_Post_Type;
+use WP_Query;
 
 /**
  * Main plugin class using Singleton pattern.
@@ -62,6 +65,9 @@ class Setup {
 		// Setup starter patterns.
 		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_starter_patterns_natively' ) );
+
+		// Hook onto "Event ended" action to update the option, which powers the default_term field of the taxonomy.
+		add_action( 'gatherpress_event_ended', array( $this, 'update_default_term_on_season_end' ) );
 	}
 
 	/**
@@ -116,7 +122,7 @@ class Setup {
 	protected function get_shadow_taxonomy_labels( string $post_type ): array {
 		$post_type_object = get_post_type_object( $post_type );
 
-		if ( ! $post_type_object instanceof \WP_Post_Type ) {
+		if ( ! $post_type_object instanceof WP_Post_Type ) {
 			return array(
 				'name'          => $post_type,
 				'singular_name' => $post_type,
@@ -156,48 +162,82 @@ class Setup {
 		*/
 		$labels += array(
 			'popular_items'              => sprintf(
-				__( 'Popular %s', 'textdomain' ),
+				/* translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons". */
+				__( 'Popular %s', 'gatherpress-seasons' ),
 				$name
 			),
 			'edit_item'                  => sprintf(
-				__( 'Edit %s', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'Edit %s', 'gatherpress-seasons' ),
 				$singular
 			),
 			'update_item'                => sprintf(
-				__( 'Update %s', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'Update %s', 'gatherpress-seasons' ),
 				$singular
 			),
 			'add_new_item'               => sprintf(
-				__( 'Add New %s', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'Add New %s', 'gatherpress-seasons' ),
 				$singular
 			),
 			'new_item_name'              => sprintf(
-				__( 'New %s Name', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'New %s Name', 'gatherpress-seasons' ),
 				$singular
 			),
 			'separate_items_with_commas' => sprintf(
-				__( 'Separate %s with commas', 'textdomain' ),
+				/* translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons". */
+				__( 'Separate %s with commas', 'gatherpress-seasons' ),
 				lcfirst( $name )
 			),
 			'add_or_remove_items'        => sprintf(
-				__( 'Add or remove %s', 'textdomain' ),
+				/* translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons". */
+				__( 'Add or remove %s', 'gatherpress-seasons' ),
 				lcfirst( $name )
 			),
 			'choose_from_most_used'      => sprintf(
-				__( 'Choose from the most used %s', 'textdomain' ),
+				/* translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons". */
+				__( 'Choose from the most used %s', 'gatherpress-seasons' ),
 				lcfirst( $name )
 			),
 			'parent_item'                => sprintf(
-				__( 'Parent %s', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'Parent %s', 'gatherpress-seasons' ),
 				$singular
 			),
 			'parent_item_colon'          => sprintf(
-				__( 'Parent %s:', 'textdomain' ),
+				/* translators: %s is replaced with the singular name of the taxonomy, e.g. "Season". */
+				__( 'Parent %s:', 'gatherpress-seasons' ),
 				$singular
 			),
 		);
 
 		return $labels;
+	}
+
+	/**
+	 * Filter to register the shadow taxonomy with custom arguments.
+	 *
+	 * This method is hooked to the 'gatherpress_shadow_taxonomy_args' filter, which is triggered when registering a shadow taxonomy for a post type.
+	 * The method checks if the post type matches the one used for seasons, and if so, it modifies the taxonomy arguments to set custom labels, show in quick edit, show in UI, and default term.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array  $args The original taxonomy arguments.
+	 * @param string $post_type The post type for which the shadow taxonomy is being registered.
+	 *
+	 * @return array The modified taxonomy arguments for the season shadow taxonomy.
+	 */
+	public function register_taxonomy_args( array $args, string $post_type ) {
+		if ( self::POST_TYPE_NAME === $post_type ) {
+			$args['labels']             = $this->get_shadow_taxonomy_labels( $post_type );
+			$args['show_in_quick_edit'] = true;
+			$args['show_ui']            = true; // Needed to show the taxonomy metabox in the editor.
+			$args['show_in_menu']       = false; // Correction after show_ui.
+			$args['default_term']       = maybe_unserialize( get_option( sprintf( 'prepared_default_term_%s', self::TAXONOMY_NAME ) ) );
+		}
+		return $args;
 	}
 
 	/**
@@ -208,20 +248,7 @@ class Setup {
 	 * @return void
 	 */
 	public function register_post_type(): void {
-		add_filter(
-			'gatherpress_shadow_taxonomy_args',
-			function ( $args, $post_type ) {
-				if ( self::POST_TYPE_NAME === $post_type ) {
-					$args['labels']             = $this->get_shadow_taxonomy_labels( $post_type );
-					$args['show_in_quick_edit'] = true;
-					$args['show_ui']            = true; // Needed to show the taxonomy metabox in the editor.
-					$args['show_in_menu']       = false; // Correction after show_ui.
-				}
-				return $args;
-			},
-			10,
-			2
-		);
+		add_filter( 'gatherpress_shadow_taxonomy_args', array( $this, 'register_taxonomy_args' ), 10, 2 );
 
 		$settings     = Settings::get_instance();
 		$rewrite_slug = $settings->get( 'seasons_url' );
@@ -382,39 +409,42 @@ class Setup {
 	 */
 	public function setup_sub_page( array $sub_pages ): array {
 
-		$current_sub_pages = $sub_pages['theater']['sections'] ?? array();
+		$current_sub_pages    = $sub_pages['theater']['sections'] ?? array();
 		$sub_pages['theater'] = array(
 			'name'     => __( 'Theater', 'gatherpress-seasons' ),
 			'priority' => 10,
-			'sections' => array_merge( $current_sub_pages, array(
-				'season_urls' => array(
-					'name'        => __( 'Permalinks', 'gatherpress' ),
-					'description' => __( 'Change permalink bases.', 'gatherpress' ),
-					'options'     => array(
-						'seasons_url' => array(
-							'labels' => array(
-								'name' => __( 'Seasons', 'gatherpress-seasons' ),
-							),
-							'field'  => array(
-								'type'    => 'text',
-								'rewrite' => true,
-								'options' => array(
-									'label'   => __( 'Permalink base of Seasons.', 'gatherpress-seasons' ),
-									'default' => $this->get_localized_post_type_slug(),
+			'sections' => array_merge(
+				$current_sub_pages,
+				array(
+					'season_urls' => array(
+						'name'        => __( 'Permalinks', 'gatherpress' ),
+						'description' => __( 'Change permalink bases.', 'gatherpress' ),
+						'options'     => array(
+							'seasons_url' => array(
+								'labels' => array(
+									'name' => __( 'Seasons', 'gatherpress-seasons' ),
 								),
-								'preview' => array(
-									'template' => 'url-rewrite-preview',
-									'suffix'   => _x(
-										'sample-season',
-										'URL permalink structure example for seasons',
-										'gatherpress-seasons'
+								'field'  => array(
+									'type'    => 'text',
+									'rewrite' => true,
+									'options' => array(
+										'label'   => __( 'Permalink base of Seasons.', 'gatherpress-seasons' ),
+										'default' => $this->get_localized_post_type_slug(),
+									),
+									'preview' => array(
+										'template' => 'url-rewrite-preview',
+										'suffix'   => _x(
+											'sample-season',
+											'URL permalink structure example for seasons',
+											'gatherpress-seasons'
+										),
 									),
 								),
 							),
 						),
 					),
-				),
-			) ),
+				)
+			),
 		);
 
 		return $sub_pages;
@@ -472,5 +502,60 @@ class Setup {
 				'source'      => 'plugin',
 			)
 		);
+	}
+
+	/**
+	 * Update the option, that powers the default_term field of the taxonomy, when a season ends.
+	 *
+	 * This method is hooked to the 'gatherpress_event_ended' action, which is triggered when an event-supporting post ends.
+	 * This action is not part of gatherpress core, it's triggered by the "GatherPress Cache Invalidation Hooks" plugin.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $event_id The ID of the event-supporting post that ended.
+	 *                      Can be an event, a season, a play or anything else.
+	 *
+	 * @return void
+	 */
+	public function update_default_term_on_season_end( int $event_id ): void {
+		$post_type = get_post_type( $event_id );
+		if ( self::POST_TYPE_NAME !== $post_type ) {
+			return;
+		}
+
+		// Look for the next season.
+		$new_season  = new WP_Query(
+			array(
+				'post_type'               => self::POST_TYPE_NAME,
+				'posts_per_page'          => 1,
+				'gatherpress_event_query' => 'upcoming', // gatherpress core query var.
+				'include_unfinished'      => true, // gatherpress core query var.
+				'post_status'             => 'publish',
+				'order'                   => 'ASC',
+				'no_found_rows'           => false,
+				'update_post_meta_cache'  => false,
+				'update_post_term_cache'  => false,
+			)
+		);
+		$option_name = sprintf( 'prepared_default_term_%s', self::TAXONOMY_NAME );
+
+		if ( ! empty( $new_season->posts ) ) {
+			$shadow_source = Shadow_Source::get_instance();
+			$season_post   = $new_season->posts[0];
+			$season_term   = get_term_by(
+				'slug',
+				$shadow_source->term_slug_from_post_name( $season_post->post_name ),
+				self::TAXONOMY_NAME,
+				ARRAY_A
+			);
+			$save_data     = array(
+				'name' => $season_term['name'],
+				'slug' => $season_term['slug'],
+			);
+			update_option( $option_name, $save_data );
+		} else {
+			// No upcoming seasons, delete the option.
+			delete_option( $option_name );
+		}
 	}
 }
