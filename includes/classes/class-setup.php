@@ -367,8 +367,12 @@ class Setup {
 	 */
 	public function enqueue_editor_assets(): void {
 		$asset_file = GATHERPRESS_SEASONS_CORE_PATH . '/build/index.asset.php';
-
 		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		// Guard to only enqueue on the season edit screen.
+		if ( self::POST_TYPE_NAME !== get_current_screen()->post_type ) {
 			return;
 		}
 
