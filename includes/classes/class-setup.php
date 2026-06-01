@@ -308,6 +308,7 @@ class Setup {
 	 */
 	public function register_post_tax_relations(): void {
 		\register_taxonomy_for_object_type( self::TAXONOMY_NAME, 'gatherpress_event' );
+		\register_taxonomy_for_object_type( self::TAXONOMY_NAME, 'gatherpress_play' );
 	}
 
 	/**
