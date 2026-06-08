@@ -13,6 +13,7 @@ registerBlockVariation( 'gatherpress/venue', {
 	name: 'gatherpress-seasons/details',
 	title: __( 'Season', 'gatherpress' ),
 	description: __( 'Provides season context.', 'gatherpress' ),
+	icon: 'clock',
 	category: 'gatherpress',
 	isActive: [ 'sourcePostType' ],
 	attributes: {
