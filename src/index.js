@@ -24,7 +24,7 @@ const SIX_MONTHS = ONE_MONTH * 6;
 // Filter the duration options for the seasons post type.
 addFilter(
 	'gatherpress.durationOptions',
-	'gatherpress/durationOptionsTest',
+	'gatherpress-seasons/durationOptions',
 	function () {
 		return [
 			{
