@@ -52,6 +52,7 @@ class Setup {
 		add_filter( 'gatherpress_event_datetime_label', array( $this, 'change_event_datetime_label' ), 10, 2 );
 		// ... and load new duration options.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_variation_assets' ) );
 
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		// Register seasons post type.
@@ -366,13 +367,14 @@ class Setup {
 	 * @return void
 	 */
 	public function enqueue_editor_assets(): void {
-		$asset_file = GATHERPRESS_SEASONS_CORE_PATH . '/build/index.asset.php';
-		if ( ! file_exists( $asset_file ) ) {
-			return;
-		}
 
 		// Guard to only enqueue on the season edit screen.
 		if ( self::POST_TYPE_NAME !== get_current_screen()->post_type ) {
+			return;
+		}
+
+		$asset_file = GATHERPRESS_SEASONS_CORE_PATH . '/build/index.asset.php';
+		if ( ! file_exists( $asset_file ) ) {
 			return;
 		}
 
@@ -397,6 +399,44 @@ class Setup {
 
 		wp_set_script_translations(
 			'gatherpress-seasons-editor',
+			'gatherpress-seasons'
+		);
+	}
+
+	/**
+	 * Enqueues the editor script that registers the block variation for the gatherpress/venue block.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function enqueue_variation_assets(): void {
+		$asset_file = GATHERPRESS_SEASONS_CORE_PATH . '/build/variation.asset.php';
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		/**
+		 * The asset file is expected to return an array with 'dependencies' and 'version' keys.
+		 *
+		 * @var array{dependencies: string[], version: string} $asset
+		 */
+		$asset = include $asset_file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+
+		if ( ! is_array( $asset ) || ! isset( $asset['dependencies'], $asset['version'] ) ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'gatherpress-seasons-variation',
+			plugins_url( 'build/variation.js', dirname( __DIR__, 1 ) ),
+			$asset['dependencies'],
+			(string) $asset['version'],
+			true
+		);
+
+		wp_set_script_translations(
+			'gatherpress-seasons-variation',
 			'gatherpress-seasons'
 		);
 	}
