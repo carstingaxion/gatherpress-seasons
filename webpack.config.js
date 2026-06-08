@@ -5,6 +5,6 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		index: path.resolve( __dirname, 'src', 'index.js' ),
-		'variation': path.resolve( __dirname, 'src', 'variation.js' ),
+		variation: path.resolve( __dirname, 'src', 'variation.js' ),
 	},
 };

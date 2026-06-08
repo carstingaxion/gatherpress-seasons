@@ -23,16 +23,16 @@ registerBlockVariation( 'gatherpress/venue', {
 			'core/post-title',
 			{
 				level: 3,
-				isLink: true
-			}
+				isLink: true,
+			},
 		],
 		[
 			'core/post-featured-image',
 			{
-				isLink: true
-			}
+				isLink: true,
+			},
 		],
 	],
 	scope: [ 'inserter', 'block' ], // Defaults to 'block' and 'inserter'.
-	example: {} // Disabled like the original 'core/post-terms' block.
+	example: {}, // Disabled like the original 'core/post-terms' block.
 } );
