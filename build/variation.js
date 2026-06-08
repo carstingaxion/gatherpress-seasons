@@ -2,13 +2,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "@wordpress/hooks"
-/*!*******************************!*\
-  !*** external ["wp","hooks"] ***!
-  \*******************************/
+/***/ "@wordpress/blocks"
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
 (module) {
 
-module.exports = window["wp"]["hooks"];
+module.exports = window["wp"]["blocks"];
 
 /***/ },
 
@@ -99,12 +99,12 @@ module.exports = window["wp"]["i18n"];
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
 (() => {
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/*!**************************!*\
+  !*** ./src/variation.js ***!
+  \**************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /**
@@ -113,37 +113,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Relabel the editor sidebar panel title for the same post type.
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_0__.addFilter)('gatherpress.eventSettingsPanelTitle', 'gatherpress-seasons/relabel', (title, pt) => 'gatherpress_season' === pt ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Period', 'gatherpress-seasons') : title);
-
-// Define new duration options for the seasons post type.
-const ONE_DAY = 24;
-const ONE_WEEK = ONE_DAY * 7;
-const ONE_MONTH = ONE_DAY * 30;
-const THREE_MONTHS = ONE_MONTH * 3;
-const SIX_MONTHS = ONE_MONTH * 6;
-
-// Filter the duration options for the seasons post type.
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_0__.addFilter)('gatherpress.durationOptions', 'gatherpress-seasons/durationOptions', function () {
-  return [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('6 months', 'gatherpress-seasons'),
-    value: SIX_MONTHS
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('3 months', 'gatherpress-seasons'),
-    value: THREE_MONTHS
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('1 month', 'gatherpress-seasons'),
-    value: ONE_MONTH
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('1 week', 'gatherpress-seasons'),
-    value: ONE_WEEK
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Set an end time…', 'gatherpress'),
-    value: false
-  }];
+/**
+ * Extend 'gatherpress/venue' to provide production context.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-variations/
+ */
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockVariation)('gatherpress/venue', {
+  name: 'gatherpress-seasons/details',
+  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Season', 'gatherpress'),
+  description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Provides season context.', 'gatherpress'),
+  category: 'gatherpress',
+  isActive: ['sourcePostType'],
+  attributes: {
+    sourcePostType: 'gatherpress_season'
+  },
+  innerBlocks: [['core/post-title', {
+    level: 3,
+    isLink: true
+  }], ['core/post-featured-image', {
+    isLink: true
+  }]],
+  scope: ['inserter', 'block'],
+  // Defaults to 'block' and 'inserter'.
+  example: {} // Disabled like the original 'core/post-terms' block.
 });
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=variation.js.map
