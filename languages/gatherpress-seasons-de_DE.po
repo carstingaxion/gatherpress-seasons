@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: GatherPress Seasons 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gatherpress-"
 "seasons\n"
-"POT-Creation-Date: 2026-05-31T14:34:53+02:00\n"
-"PO-Revision-Date: 2026-05-31 14:43+0200\n"
+"POT-Creation-Date: 2026-06-17T14:25:10+02:00\n"
+"PO-Revision-Date: 2026-06-17 14:26+0200\n"
 "Last-Translator: Carsten Bach\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -19,178 +19,241 @@ msgstr ""
 "X-Domain: gatherpress-seasons\n"
 
 #. Plugin Name of the plugin
+#: plugin.php
 msgid "GatherPress Seasons"
 msgstr "GatherPress Saisons"
 
 #. Plugin URI of the plugin
+#: plugin.php
 msgid "https://github.com/carstingaxion/gatherpress-seasons"
 msgstr ""
 
 #. Author of the plugin
+#: plugin.php
 msgid "carstenbach"
 msgstr ""
 
-#: includes/classes/class-setup.php:107 includes/classes/class-setup.php:128
-#: includes/classes/class-setup.php:270
-msgid "Seasons"
-msgstr "Saisons"
-
-#: includes/classes/class-setup.php:108
-msgid "Season"
-msgstr "Saison"
-
-#: includes/classes/class-setup.php:109
-msgid "Add New"
-msgstr "Neu hinzufügen"
-
-#: includes/classes/class-setup.php:110
-msgid "Add New Season"
-msgstr "Neue Saison hinzufügen"
-
-#: includes/classes/class-setup.php:111
-msgid "Edit Season"
-msgstr "Saison bearbeiten"
-
-#: includes/classes/class-setup.php:112
-msgid "New Season"
-msgstr "Neue Saison"
-
-#: includes/classes/class-setup.php:113
-msgid "View Season"
-msgstr "Saison anzeigen"
-
-#: includes/classes/class-setup.php:114
-msgid "View Seasons"
-msgstr "Saisons anzeigen"
-
-#: includes/classes/class-setup.php:115
-msgid "Search Seasons"
-msgstr "Saisons durchsuchen"
-
-#: includes/classes/class-setup.php:116
-msgid "No seasons found"
-msgstr "Keine Saisons gefunden"
-
-#: includes/classes/class-setup.php:117
-msgid "No seasons found in Trash"
-msgstr "Keine Saisons im Papierkorb gefunden"
-
-#: includes/classes/class-setup.php:118
-msgid "Parent Season:"
-msgstr "Übergeordnete Saison:"
-
-#: includes/classes/class-setup.php:119
-msgid "All Seasons"
-msgstr "Alle Saisons"
-
-#: includes/classes/class-setup.php:120
-msgid "Season Archives"
-msgstr "Saisonsarchive"
-
-#: includes/classes/class-setup.php:121
-msgid "Season Attributes"
-msgstr "Saisonseigenschaften"
-
-#: includes/classes/class-setup.php:122
-msgid "Insert into season"
-msgstr "In Saison einfügen"
-
-#: includes/classes/class-setup.php:123
-msgid "Uploaded to this season"
-msgstr "Zu dieser Saison hochgeladen"
-
-#: includes/classes/class-setup.php:124
-msgid "Season Poster"
-msgstr "Saisonsposter"
-
-#: includes/classes/class-setup.php:125
-msgid "Set season poster"
-msgstr "Saisonsposter festlegen"
-
-#: includes/classes/class-setup.php:126
-msgid "Remove season poster"
-msgstr "Saisonsposter entfernen"
-
-#: includes/classes/class-setup.php:127
-msgid "Use as season poster"
-msgstr "Als Saisonsposter verwenden"
-
-#: includes/classes/class-setup.php:129
-msgid "Filter seasons list"
-msgstr "Saisonsliste filtern"
-
-#: includes/classes/class-setup.php:130
-msgid "Filter seasons by date"
-msgstr "Saisons nach Datum filtern"
-
-#: includes/classes/class-setup.php:131
-msgid "Seasons list navigation"
-msgstr "Navigation der Saisonsliste"
-
-#: includes/classes/class-setup.php:132
-msgid "Seasons list"
-msgstr "Saisonsliste"
-
-#: includes/classes/class-setup.php:133
-msgid "Season published."
-msgstr "Saison veröffentlicht."
-
-#: includes/classes/class-setup.php:134
-msgid "Season published privately."
-msgstr "Saison privat veröffentlicht."
-
-#: includes/classes/class-setup.php:135
-msgid "Season reverted to draft."
-msgstr "Saison auf Entwurf zurückgesetzt."
-
-#: includes/classes/class-setup.php:136
-msgid "Season moved to Trash."
-msgstr "Saison in den Papierkorb verschoben."
-
-#: includes/classes/class-setup.php:137
-msgid "Season scheduled."
-msgstr "Saison geplant."
-
-#: includes/classes/class-setup.php:138
-msgid "Season updated."
-msgstr "Saison aktualisiert."
-
-#: includes/classes/class-setup.php:139
-msgid "Season Link"
-msgstr "Saisonslink"
-
-#: includes/classes/class-setup.php:140
-msgid "A link to a season."
-msgstr "Ein Link zu einer Saison."
-
-#: includes/classes/class-setup.php:203 src/index.js:13
-msgid "Period"
-msgstr "Zeitraum"
-
-#: includes/classes/class-setup.php:261
-msgid "Theater"
-msgstr ""
-
-#: includes/classes/class-setup.php:276
-msgid "Permalink base of Seasons."
-msgstr ""
-
-#: includes/classes/class-setup.php:282
-msgctxt "URL permalink structure example for seasons"
-msgid "sample-season"
-msgstr "beispiel-saison"
-
-#: includes/classes/class-setup.php:314 includes/classes/class-setup.php:334
+#: includes/classes/class-block.php:117 includes/classes/class-block.php:138
 msgid "Seasons Starter"
 msgstr "Saison Starter"
 
-#: includes/classes/class-setup.php:315 includes/classes/class-setup.php:335
+#: includes/classes/class-block.php:118 includes/classes/class-block.php:139
 msgid "A starter pattern for seasons."
 msgstr ""
 
-#: includes/classes/class-setup.php:316 includes/classes/class-setup.php:337
+#: includes/classes/class-block.php:119 includes/classes/class-block.php:141
 msgid "This is a starter pattern for seasons. Customize it to fit your needs!"
 msgstr ""
+
+#: includes/classes/class-setup.php:99 includes/classes/class-setup.php:254
+msgid "Season"
+msgstr "Saison"
+
+#. translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons".
+#: includes/classes/class-setup.php:162
+#, php-format
+msgid "Popular %s"
+msgstr ""
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:167
+#, fuzzy, php-format
+#| msgid "Edit Season"
+msgid "Edit %s"
+msgstr "Saison bearbeiten"
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:172
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:177
+#, fuzzy, php-format
+#| msgid "Add New"
+msgid "Add New %s"
+msgstr "Neu hinzufügen"
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:182
+#, php-format
+msgid "New %s Name"
+msgstr ""
+
+#. translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons".
+#: includes/classes/class-setup.php:187
+#, php-format
+msgid "Separate %s with commas"
+msgstr ""
+
+#. translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons".
+#: includes/classes/class-setup.php:192
+#, php-format
+msgid "Add or remove %s"
+msgstr ""
+
+#. translators: %s is replaced with the plural name of the taxonomy, e.g. "Seasons".
+#: includes/classes/class-setup.php:197
+#, php-format
+msgid "Choose from the most used %s"
+msgstr ""
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:202
+#, fuzzy, php-format
+#| msgid "Parent Season:"
+msgid "Parent %s"
+msgstr "Übergeordnete Saison:"
+
+#. translators: %s is replaced with the singular name of the taxonomy, e.g. "Season".
+#: includes/classes/class-setup.php:207
+#, fuzzy, php-format
+#| msgid "Parent Season:"
+msgid "Parent %s:"
+msgstr "Übergeordnete Saison:"
+
+#: includes/classes/class-setup.php:253 includes/classes/class-setup.php:266
+#: includes/classes/class-setup.php:275 includes/classes/class-setup.php:426
+msgid "Seasons"
+msgstr "Saisons"
+
+#: includes/classes/class-setup.php:255
+msgid "Add New"
+msgstr "Neu hinzufügen"
+
+#: includes/classes/class-setup.php:256
+msgid "Add New Season"
+msgstr "Neue Saison hinzufügen"
+
+#: includes/classes/class-setup.php:257
+msgid "Edit Season"
+msgstr "Saison bearbeiten"
+
+#: includes/classes/class-setup.php:258
+msgid "New Season"
+msgstr "Neue Saison"
+
+#: includes/classes/class-setup.php:259
+msgid "View Season"
+msgstr "Saison anzeigen"
+
+#: includes/classes/class-setup.php:260
+msgid "View Seasons"
+msgstr "Saisons anzeigen"
+
+#: includes/classes/class-setup.php:261
+msgid "Search Seasons"
+msgstr "Saisons durchsuchen"
+
+#: includes/classes/class-setup.php:262
+msgid "No seasons found"
+msgstr "Keine Saisons gefunden"
+
+#: includes/classes/class-setup.php:263
+msgid "No seasons found in Trash"
+msgstr "Keine Saisons im Papierkorb gefunden"
+
+#: includes/classes/class-setup.php:264
+msgid "Parent Season:"
+msgstr "Übergeordnete Saison:"
+
+#: includes/classes/class-setup.php:267
+msgid "Season Archives"
+msgstr "Saisonsarchive"
+
+#: includes/classes/class-setup.php:268
+msgid "Season Attributes"
+msgstr "Saisonseigenschaften"
+
+#: includes/classes/class-setup.php:269
+msgid "Insert into season"
+msgstr "In Saison einfügen"
+
+#: includes/classes/class-setup.php:270
+msgid "Uploaded to this season"
+msgstr "Zu dieser Saison hochgeladen"
+
+#: includes/classes/class-setup.php:271
+msgid "Season Poster"
+msgstr "Saisonsposter"
+
+#: includes/classes/class-setup.php:272
+msgid "Set season poster"
+msgstr "Saisonsposter festlegen"
+
+#: includes/classes/class-setup.php:273
+msgid "Remove season poster"
+msgstr "Saisonsposter entfernen"
+
+#: includes/classes/class-setup.php:274
+msgid "Use as season poster"
+msgstr "Als Saisonsposter verwenden"
+
+#: includes/classes/class-setup.php:276
+msgid "Filter seasons list"
+msgstr "Saisonsliste filtern"
+
+#: includes/classes/class-setup.php:277
+msgid "Filter seasons by date"
+msgstr "Saisons nach Datum filtern"
+
+#: includes/classes/class-setup.php:278
+msgid "Seasons list navigation"
+msgstr "Navigation der Saisonsliste"
+
+#: includes/classes/class-setup.php:279
+msgid "Seasons list"
+msgstr "Saisonsliste"
+
+#: includes/classes/class-setup.php:280
+msgid "Season published."
+msgstr "Saison veröffentlicht."
+
+#: includes/classes/class-setup.php:281
+msgid "Season published privately."
+msgstr "Saison privat veröffentlicht."
+
+#: includes/classes/class-setup.php:282
+msgid "Season reverted to draft."
+msgstr "Saison auf Entwurf zurückgesetzt."
+
+#: includes/classes/class-setup.php:283
+msgid "Season moved to Trash."
+msgstr "Saison in den Papierkorb verschoben."
+
+#: includes/classes/class-setup.php:284
+msgid "Season scheduled."
+msgstr "Saison geplant."
+
+#: includes/classes/class-setup.php:285
+msgid "Season updated."
+msgstr "Saison aktualisiert."
+
+#: includes/classes/class-setup.php:286
+msgid "Season Link"
+msgstr "Saisonslink"
+
+#: includes/classes/class-setup.php:287
+msgid "A link to a season."
+msgstr "Ein Link zu einer Saison."
+
+#: includes/classes/class-setup.php:353 src/index.js:13
+msgid "Period"
+msgstr "Zeitraum"
+
+#: includes/classes/class-setup.php:415
+msgid "Theater"
+msgstr ""
+
+#: includes/classes/class-setup.php:432
+msgid "Permalink base of Seasons."
+msgstr ""
+
+#: includes/classes/class-setup.php:437
+msgctxt "URL permalink structure example for seasons"
+msgid "sample-season"
+msgstr "beispiel-saison"
 
 #: src/index.js:31
 msgid "6 months"
@@ -207,3 +270,11 @@ msgstr "1 Monat"
 #: src/index.js:43
 msgid "1 week"
 msgstr "1 Woche"
+
+#. translators: %s: Singular post type label, e.g. "Season".
+#: src/variation.js:21
+msgid "Provides %s context."
+msgstr ""
+
+#~ msgid "All Seasons"
+#~ msgstr "Alle Saisons"
