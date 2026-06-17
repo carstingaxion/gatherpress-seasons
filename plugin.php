@@ -3,7 +3,7 @@
  * Plugin Name:       GatherPress Seasons
  * Plugin URI:        https://github.com/carstingaxion/gatherpress-seasons
  * Description:
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Requires plugins:  gatherpress
