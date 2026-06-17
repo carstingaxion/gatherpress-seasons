@@ -52,7 +52,6 @@ class Setup {
 		add_filter( 'gatherpress_event_datetime_label', array( $this, 'change_event_datetime_label' ), 10, 2 );
 		// ... and load new duration options.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_variation_assets' ) );
 
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		// Register seasons post type.
@@ -62,10 +61,6 @@ class Setup {
 
 		// Add settings sub-page.
 		add_filter( 'gatherpress_sub_pages', array( $this, 'setup_sub_page' ) );
-
-		// Setup starter patterns.
-		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 );
-		add_action( 'init', array( $this, 'register_starter_patterns_natively' ) );
 
 		// Hook onto "Event ended" action to update the option, which powers the default_term field of the taxonomy.
 		add_action( 'gatherpress_event_ended', array( $this, 'update_default_term_on_season_end' ) );
@@ -405,45 +400,6 @@ class Setup {
 	}
 
 	/**
-	 * Enqueues the editor script that registers the block variation for the gatherpress/venue block.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return void
-	 */
-	public function enqueue_variation_assets(): void {
-		$asset_file = GATHERPRESS_SEASONS_CORE_PATH . '/build/variation.asset.php';
-		if ( ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		/**
-		 * The asset file is expected to return an array with 'dependencies' and 'version' keys.
-		 *
-		 * @var array{dependencies: string[], version: string} $asset
-		 */
-		$asset = include $asset_file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-
-		if ( ! is_array( $asset ) || ! isset( $asset['dependencies'], $asset['version'] ) ) {
-			return;
-		}
-
-		wp_enqueue_script(
-			'gatherpress-seasons-variation',
-			plugins_url( 'build/variation.js', dirname( __DIR__, 1 ) ),
-			$asset['dependencies'],
-			(string) $asset['version'],
-			true
-		);
-
-		wp_set_script_translations(
-			'gatherpress-seasons-variation',
-			'gatherpress-seasons'
-		);
-	}
-
-
-	/**
 	 * Adds a sub-page for "Seasons" to the existing sub-pages array.
 	 *
 	 * This function modifies the provided sub-pages array to include a new sub-page
@@ -493,60 +449,6 @@ class Setup {
 		);
 
 		return $sub_pages;
-	}
-
-	/**
-	 * Set up starter patterns FOR ALL post types using the 'gatherpress-event-date' post_type support.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @uses 'gatherpress_event_starter_patterns' filter
-	 * @see  https://github.com/GatherPress/gatherpress/blob/develop/docs/developer/hooks/gatherpress_event_starter_patterns.md
-	 *
-	 * @param  array $patterns   Pattern definitions loaded from the plugin and other sources.
-	 * @param  array $post_types Post type slugs declaring gatherpress-event-date support.
-	 *
-	 * @return array
-	 */
-	public function setup_starter_patterns( array $patterns, array $post_types ): array {
-		$patterns[] = array(
-			'name'        => 'gatherpress-seasons/starter',
-			'title'       => __( 'Seasons Starter', 'gatherpress-seasons' ),
-			'description' => __( 'A starter pattern for seasons.', 'gatherpress-seasons' ),
-			'content'     => '<!-- wp:paragraph --><p>' . esc_html__( 'This is a starter pattern for seasons. Customize it to fit your needs!', 'gatherpress-seasons' ) . '</p><!-- /wp:paragraph -->',
-		);
-
-		return $patterns;
-	}
-
-	/**
-	 * Register the starter pattern natively using WordPress's block pattern API.
-	 * This is an alternative to using the 'gatherpress_event_starter_patterns' filter and allows the pattern to be available only to selected post types.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return void
-	 */
-	public function register_starter_patterns_natively(): void {
-
-		$pattern = array(
-			'name'        => 'gatherpress-seasons/starter',
-			'title'       => __( 'Seasons Starter', 'gatherpress-seasons' ),
-			'description' => __( 'A starter pattern for seasons.', 'gatherpress-seasons' ),
-			'post_types'  => array( self::POST_TYPE_NAME ),
-			'content'     => '<!-- wp:paragraph --><p>' . esc_html__( 'This is a starter pattern for seasons. Customize it to fit your needs!', 'gatherpress-seasons' ) . '</p><!-- /wp:paragraph -->',
-		);
-		\register_block_pattern(
-			$pattern['name'],
-			array(
-				'title'       => $pattern['title'] ?? '',
-				'description' => $pattern['description'] ?? '',
-				'content'     => $pattern['content'] ?? '',
-				'blockTypes'  => array( 'core/post-content' ),
-				'postTypes'   => array( self::POST_TYPE_NAME ),
-				'source'      => 'plugin',
-			)
-		);
 	}
 
 	/**

@@ -55,6 +55,7 @@ add_filter( 'gatherpress_autoloader', 'gatherpress_seasons_autoloader' );
 function gatherpress_seasons_setup(): void {
 	if ( defined( 'GATHERPRESS_VERSION' ) ) {
 		\GatherPress_Seasons\Setup::get_instance();
+		\GatherPress_Seasons\Block::get_instance();
 	}
 }
 add_action( 'plugins_loaded', 'gatherpress_seasons_setup' );
