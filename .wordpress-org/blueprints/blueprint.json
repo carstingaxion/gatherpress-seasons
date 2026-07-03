@@ -45,10 +45,18 @@
           "url": "https://github.com/carstingaxion/gatherpress-seasons/releases/latest/download/gatherpress-seasons.zip"
       },
       "options": {
-        "activate": true
+          "activate": true
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/gatherpress-do-not-rewrite-urls-on-import.php",
+      "data": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/GatherPress/gatherpress-demo-data/main/blueprints/gatherpress-do-not-rewrite-urls-on-import.php"
       },
       "progress": {
-        "caption": "Installing plugin from GitHub: carstingaxion/gatherpress-seasons"
+        "caption": "TEMPORARY PATCH, see https://github.com/GatherPress/gatherpress/issues/1842"
       }
     },
     {
