@@ -469,13 +469,12 @@ class Setup {
 	 *
 	 * @param int     $post_id Post ID of the saved season.
 	 * @param WP_Post $post    The saved post object.
-	 * @param bool    $update  Whether this is an existing post being updated.
 	 *
 	 * @return void
 	 */
-	public function set_initial_default_term_on_first_season( int $post_id, WP_Post $post, bool $update ): void {
+	public function set_initial_default_term_on_first_season( int $post_id, WP_Post $post ): void {
 		// Only act on the initial publish, not on updates or autosaves.
-		if ( $update || 'publish' !== $post->post_status || empty( $post->post_name ) ) {
+		if ( 'publish' !== $post->post_status || empty( $post->post_name ) ) {
 			return;
 		}
 
