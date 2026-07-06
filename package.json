@@ -1,6 +1,6 @@
 {
     "name": "gatherpress-seasons",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Adds a Season post type to GatherPress with period date, duration presets, auto-rotating default term, and relation to events and productions.",
     "author": "carstenbach",
     "license": "GPL-2.0-or-later",

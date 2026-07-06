@@ -3,7 +3,7 @@
  * Plugin Name:       GatherPress Seasons
  * Plugin URI:        https://github.com/carstingaxion/gatherpress-seasons
  * Description:       Adds a Season post type to GatherPress with period date, duration presets, auto-rotating default term, and relation to events and productions.
- * Version:           0.2.1
+ * Version:           0.2.2
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Requires plugins:  gatherpress
