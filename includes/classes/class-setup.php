@@ -12,6 +12,7 @@ namespace GatherPress_Seasons;
 use GatherPress\Core;
 use GatherPress\Core\Settings;
 use GatherPress\Core\Shadow_Source;
+use WP_Post;
 use WP_Post_Type;
 use WP_Query;
 
@@ -64,6 +65,11 @@ class Setup {
 
 		// Hook onto "Event ended" action to update the option, which powers the default_term field of the taxonomy.
 		add_action( 'gatherpress_event_ended', array( $this, 'update_default_term_on_season_end' ) );
+
+		// Set the initial default term when the very first season is published.
+		// Runs at priority 20 — after Shadow_Source::add_term() at priority 10
+		// — so the shadow term already exists when we look it up.
+		add_action( sprintf( 'save_post_%s', self::POST_TYPE_NAME ), array( $this, 'set_initial_default_term_on_first_season' ), 20, 3 );
 	}
 
 	/**
@@ -262,7 +268,6 @@ class Setup {
 			'not_found'                => __( 'No seasons found', 'gatherpress-seasons' ),
 			'not_found_in_trash'       => __( 'No seasons found in Trash', 'gatherpress-seasons' ),
 			'parent_item_colon'        => __( 'Parent Season:', 'gatherpress-seasons' ),
-			// 'all_items'                => __( 'All Seasons', 'gatherpress-seasons' ),
 			'all_items'                => __( 'Seasons', 'gatherpress-seasons' ),
 			'archives'                 => __( 'Season Archives', 'gatherpress-seasons' ),
 			'attributes'               => __( 'Season Attributes', 'gatherpress-seasons' ),
@@ -449,6 +454,53 @@ class Setup {
 		);
 
 		return $sub_pages;
+	}
+
+	/**
+	 * Set the default term option when the very first season is published.
+	 *
+	 * Fires on `save_post_gatherpress_season` at priority 20, after
+	 * Shadow_Source::add_term() (priority 10) has already created the shadow
+	 * term for the new post. The option is only written when it does not yet
+	 * exist — i.e. no season has ever been published on this site — so
+	 * subsequent season publishes leave the current default untouched.
+	 *
+	 * @since 0.2.2
+	 *
+	 * @param int     $post_id Post ID of the saved season.
+	 * @param WP_Post $post    The saved post object.
+	 * @param bool    $update  Whether this is an existing post being updated.
+	 *
+	 * @return void
+	 */
+	public function set_initial_default_term_on_first_season( int $post_id, WP_Post $post, bool $update ): void {
+		// Only act on the initial publish, not on updates or autosaves.
+		if ( $update || 'publish' !== $post->post_status || empty( $post->post_name ) ) {
+			return;
+		}
+
+		$option_name = sprintf( 'prepared_default_term_%s', self::TAXONOMY_NAME );
+
+		// Bail if a default term is already prepared — this is not the first season.
+		if ( false !== get_option( $option_name ) ) {
+			return;
+		}
+
+		$shadow_source = Shadow_Source::get_instance();
+		$term_slug     = $shadow_source->term_slug_from_post_name( $post->post_name );
+		$season_term   = get_term_by( 'slug', $term_slug, self::TAXONOMY_NAME, ARRAY_A );
+
+		if ( ! is_array( $season_term ) || empty( $season_term['name'] ) ) {
+			return;
+		}
+
+		update_option(
+			$option_name,
+			array(
+				'name' => $season_term['name'],
+				'slug' => $season_term['slug'],
+			)
+		);
 	}
 
 	/**
