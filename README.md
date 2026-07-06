@@ -12,7 +12,33 @@
 
 ## Description
 
-GatherPress Seasons registers a custom `Season` post type and a shadow taxonomy for season terms that can be assigned to GatherPress events and plays. It updates the admin interface for seasons by relabeling the event date field to “Period”, adds a Gutenberg editor script for the season editor, exposes a seasons permalink setting in the GatherPress Theater settings page, and keeps the default season term in sync when seasons end.
+GatherPress Seasons extends [GatherPress](https://gatherpress.org/) for **theater and performing-arts use cases**. It adds a dedicated **Season** content type and wires it into GatherPress's event system so that every season spans a defined period, carries a two-way relationship with both regular GatherPress events and Productions (from the companion GatherPress Productions plugin), and always keeps the shadow taxonomy's default term pointed at the currently active season.
+
+### What it does
+
+**Season post type (`gatherpress_season`)**  
+Registers a public, block-editor-enabled post type called *Season* (hierarchical, with archive, configurable permalink base). Seasons support a featured image — labelled *Season Poster* in the UI — as well as title, content, excerpt, custom fields, and revisions. The post type is displayed under the GatherPress Events menu in the admin.
+
+**Period date instead of "Event date"**  
+On Season posts, GatherPress's built-in date picker and admin list column are re-labelled *Period* (via both PHP and a JavaScript filter on the editor sidebar panel title). Season-appropriate duration presets replace the standard event duration options: *6 months*, *3 months*, *1 month*, *1 week*, and a manual "Set an end time…" fallback.
+
+**Shadow taxonomy linking seasons to events and productions**  
+A private shadow taxonomy (`_gatherpress_season`) is registered on both `gatherpress_event` and `gatherpress_play` (the Productions post type). This wires individual events and productions back to the season they belong to, enabling queries across all content for a given season.
+
+**Auto-rotating default season term**  
+When a season's period ends (triggered by the `gatherpress_event_ended` action), the plugin queries for the next upcoming published season and updates a `prepared_default_term__gatherpress_season` option. The shadow taxonomy reads this option as its `default_term`, so newly created events and productions are automatically assigned to the current active season without any manual selection.
+
+**Block variation: Season Details**  
+Registers a JavaScript block variation of `gatherpress/venue` named *Season* (or whatever the singular post-type label is). The variation sets `sourcePostType` to `gatherpress_season` and ships default inner blocks (linked post title + linked featured image at heading level 3), giving editors a ready-made Season context block in the inserter.
+
+**Re-labelled editor UI**  
+A JavaScript filter (`gatherpress.eventSettingsPanelTitle`) renames the *Event Settings* sidebar panel to *Period* when editing a Season, and a second filter (`gatherpress.durationOptions`) replaces the standard duration picker with season-length presets, keeping the authoring experience appropriate for multi-month runs.
+
+**Settings sub-page**  
+Adds a *Theater* section under the GatherPress settings screen (merging with any section added by companion plugins) with a *Permalinks* option so site administrators can customise the URL base for the Seasons archive (defaults to the translated word for "Season").
+
+**Starter block pattern**  
+Registers a `gatherpress-seasons/starter` block pattern scoped to the Season post type, giving authors an optional starting layout when creating a new season.
 
 ## Requirements
 

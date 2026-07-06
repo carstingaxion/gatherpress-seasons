@@ -1,6 +1,6 @@
 {
     "name": "carstingaxion/gatherpress-seasons",
-    "description": "",
+    "description": "Adds a Season post type to GatherPress with period date, duration presets, auto-rotating default term, and relation to events and productions.",
     "license": "GPL-2.0-or-later",
     "type": "wordpress-plugin",
     "keywords": [
