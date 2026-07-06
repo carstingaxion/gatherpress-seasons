@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased](https://github.com/carstingaxion/gatherpress-seasons/compare/0.2.1...HEAD)
+## [Unreleased](https://github.com/carstingaxion/gatherpress-seasons/compare/0.2.2...HEAD)
+
+## [0.2.2](https://github.com/carstingaxion/gatherpress-seasons/compare/0.2.1...0.2.2) - 2026-07-06
+
+- Feature/set default term with first season ([#19](https://github.com/carstingaxion/gatherpress-seasons/pull/19))
 
 ## [0.2.1](https://github.com/carstingaxion/gatherpress-seasons/compare/0.2.0...0.2.1) - 2026-06-17
 
