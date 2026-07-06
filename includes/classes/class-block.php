@@ -39,8 +39,8 @@ class Block {
 	protected function setup_hooks() {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_variation_assets' ) );
 
-		// Setup starter patterns.
-		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 );
+		// Setup starter patterns as the blocks provided via the modal on opening a new post.
+		// add_filter( 'gatherpress_event_starter_patterns', array( $this, 'setup_starter_patterns' ), 10, 2 ); // phpcs:ignore Squiz.PHP.CommentedOutCode.Found .
 		add_action( 'init', array( $this, 'register_starter_patterns_natively' ) );
 	}
 
@@ -111,7 +111,7 @@ class Block {
 	 *
 	 * @return array
 	 */
-	public function setup_starter_patterns( array $patterns, array $post_types ): array {
+	public function setup_starter_patterns( array $patterns, array $post_types ): array { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$patterns[] = array(
 			'name'        => 'gatherpress-seasons/starter',
 			'title'       => __( 'Seasons Starter', 'gatherpress-seasons' ),
